@@ -1,0 +1,25 @@
+#disk, #cpu, #memory, #temperature {
+    background: @background1;
+    color: @text2;
+    border: 3px solid @border1;
+    opacity: 0.8;
+}
+
+#disk {
+    border-right: none;
+    border-radius: 15px 0 0 15px;
+    margin: 8px -12px 0 0; /* not sure why this is there so I'll leave it */
+    padding: 2px 4px;
+}
+
+#cpu, #memory {
+    border-width: 3px 0;
+    margin: 8px 0 0 0;
+    padding: 2px;
+}
+
+#temperature {
+    border-radius: 0 15px 15px 0;
+    margin: 8px 0 0 -12px;
+    padding: 2px 4px;
+}
