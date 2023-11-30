@@ -12,6 +12,7 @@ function weather {
 	local locations arrLocations currLocationId currLocationName currWeather weatherStr
 
 	locations="New York, London, Amsterdam, Sydney" # Comma separated so we can use location names with spaces
+ 
 	IFS="," read -r -a arrLocations <<< "$(echo "$locations" | sed -E 's/,  */,/g' | sed -E 's/ /_/g')" # Replace spaces in location names with underscores for curl. Get rid of spaces after commas
 	
 	currLocationId=$(<$tmpFile)
