@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# https://github.com/Alexays/Waybar/discussions/2255
+
 # Display options for the location name and icon
 showWeatherLocation=true
 showWeatherIcon=true
