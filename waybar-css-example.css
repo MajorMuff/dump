@@ -1,3 +1,5 @@
+/* example script for https://www.reddit.com/r/hyprland/comments/187o6nq/waybar_bug_with_hyprland/ */
+
 #disk, #cpu, #memory, #temperature {
     background: @background1;
     color: @text2;
