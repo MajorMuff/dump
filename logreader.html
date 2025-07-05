@@ -1,0 +1,167 @@
+<!--
+    Todo:
+      - output in een tabel zetten. tijd, type melding, output
+      - zorgen dat 'ie wel gewoon normaal doet als je een nieuw log pakt
+      - testen met een log van een paarduizend regels
+      - de groetjes aan Theo's moeder doen
+-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Log Reader v0.1</title>
+        <style>
+            a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:'';content:none}table{border-collapse:collapse;border-spacing:0}
+
+            body {
+                font: 15px "Courier New";
+                color: #111;
+            }
+
+            .logfile-input {
+                padding: 30px;
+                padding-left: 10px;
+                background-color: #f1f1f1;
+            }
+
+            .warning, .error, .info, .user, .other, .security {
+                padding: 4px;
+                padding-left: 20px;
+                margin-bottom: 1px;
+            }
+
+            .warning { background-color: #faeca7; }
+            .error { background-color: #ffbeb3; }
+            .info { background-color: #e1e1e1; }
+            .user { background-color: #a5ccff; }
+            .security { background-color: #ffd0a5; }
+            .other { background-color: #f1f1f1; }
+
+            .warning:hover, .error:hover, .info:hover, .other:hover, .user:hover, .security:hover {
+                background-color: #fff;
+            }
+
+            .checkboxes {
+                padding: 10px;
+                display: none;
+                border-top: 1px solid #888;
+                border-bottom: 1px solid #888;
+                background-color: #f1f1f1;
+            }
+
+            .checkboxes table {
+                width: 700px;
+            }
+
+            .output {
+                margin: 24px;
+                margin-top: 140px;
+            }
+
+            .toolbar {
+                position: fixed;
+                z-index: 100;
+                top: 0;
+                width: 100%;
+                height: 140px;
+                font-family: Verdana, Geneva, Tahoma, sans-serif;
+                font-size: 12px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="toolbar">
+            <div class="logfile-input" id="logfile-input">
+                <input type="file" id="logfile" accept=".txt">
+            </div>
+            <div class="checkboxes" id="checkboxes">
+                <table>
+                    <tr>
+                        <td><input type="checkbox" id="errorsToggle" checked> ERROR</td>
+                        <td><input type="checkbox" id="warningsToggle" checked> WARNING</td>
+                        <td><input type="checkbox" id="infoToggle" checked> INFO</td>
+                        <td><input type="checkbox" id="userToggle" checked> USER</td>
+                        <td><input type="checkbox" id="securityToggle" checked> SECURITY</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <div id="output" class="output"></div>
+
+        <script>
+
+            var output = "";
+
+            function toggleDisplay(lineType) {
+                let target = document.getElementsByClassName(lineType);
+
+                for(let i = 0; i < target.length; i++) {
+                    if(target[i].style.opacity != "0.3") {
+                        target[i].style.opacity = "0.3";
+                    } else {
+                        target[i].style.opacity = "100%";
+                    }
+                }
+            }
+
+            function processLine(line) {
+                warning = line.includes("WARNING");
+                error = line.includes("ERROR");
+                info = line.includes("INFO");
+                user = line.includes("USER");
+                security = line.includes("SECURITY");
+
+                if(warning) {
+                    var newLine = "<div class=\"warning\">" + line + "</div>";
+                } else if (info) {
+                    var newLine = "<div class=\"info\">" + line + "</div>";
+                } else if (error) {
+                    var newLine = "<div class=\"error\">" + line + "</div>";
+                } else if (security) {
+                    var newLine = "<div class=\"security\">" + line + "</div>";
+                } else if (user) {
+                    var newLine = "<div class=\"user\">" + line + "</div>";
+                } else {
+                    var newLine = "<div class=\"other\">" + line + "</div>";
+                }
+
+                newLine = newLine.replace("T", " ");
+                newLine = newLine.replace("Z:", " :    ");
+
+                output += newLine;
+            }
+
+            document.getElementById("logfile").addEventListener("change", function () {
+                // document.getElementById("logfile-input").style.display = "none";
+                document.getElementById("checkboxes").style.display = "block";
+                
+                const file = this.files[0];
+                const reader = new FileReader();
+
+                reader.onload = function () {
+                    const lines = reader.result.split('\n');
+                    lines.forEach(line => processLine(line));
+                    document.getElementById("output").innerHTML = output;
+                };
+                reader.readAsText(file);
+            });
+
+            document.getElementById("errorsToggle").addEventListener("change", function () { 
+                toggleDisplay("error");
+            });
+            document.getElementById("warningsToggle").addEventListener("change", function () {
+                toggleDisplay("warning");
+            });
+            document.getElementById("infoToggle").addEventListener("change", function () {
+                toggleDisplay("info");
+            });
+            document.getElementById("userToggle").addEventListener("change", function () {
+                toggleDisplay("user");
+            });
+            document.getElementById("securityToggle").addEventListener("change", function () {
+                toggleDisplay("security");
+            });
+
+        </script>
+    </body>
+</html>
