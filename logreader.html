@@ -1,14 +1,18 @@
 <!--
     Todo:
-      - output in een tabel zetten. tijd, type melding, output
-      - zorgen dat 'ie wel gewoon normaal doet als je een nieuw log pakt
-      - testen met een log van een paarduizend regels
-      - de groetjes aan Theo's moeder doen
+    - output in een tabel zetten. tijd, type melding, output
+    - zorgen dat 'ie wel gewoon normaal doet als je een nieuw log pakt
+    - testen met een log van een paarduizend regels
 -->
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta http-equiv="Pragma" content="no-cache" />
+        <meta http-equiv="Expires" content="0" />
+
         <title>Log Reader v0.1</title>
+
         <style>
             a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:'';content:none}table{border-collapse:collapse;border-spacing:0}
 
@@ -89,7 +93,6 @@
         <div id="output" class="output"></div>
 
         <script>
-
             var output = "";
 
             function toggleDisplay(lineType) {
@@ -132,7 +135,11 @@
             }
 
             document.getElementById("logfile").addEventListener("change", function () {
-                // document.getElementById("logfile-input").style.display = "none";
+                document.getElementById("errorsToggle").checked = true;
+                document.getElementById("warningsToggle").checked = true;
+                document.getElementById("userToggle").checked = true;
+                document.getElementById("infoToggle").checked = true;
+                document.getElementById("securityToggle").checked = true;
                 document.getElementById("checkboxes").style.display = "block";
                 
                 const file = this.files[0];
